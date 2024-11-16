@@ -1,10 +1,14 @@
-#include <studio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "messages.h"
 
 #define GRID_ROWS 20
 #define GRID_COLS 20
 #define LIVES 3
+
+//Definierte Textmessages
+#define GAME_OVER "Game Over!\n"
 
 typedef struct {
     int grid_size[2];
@@ -13,6 +17,7 @@ typedef struct {
     bool is_game_over;
     int lives;
     int grid[GRID_ROWS][GRID_COLS];
+    int foods;
 } Pacman_Game;
 
 void initialize_pacman(Pacman_Game* game){ //struct initalisieren
@@ -23,7 +28,7 @@ void initialize_pacman(Pacman_Game* game){ //struct initalisieren
     game->score = 0;
     game->lives = LIVES;
     game->is_game_over = false;
-
+    //Todo: game->foods =
 
 }
 
@@ -41,7 +46,10 @@ void print_map(PacmanGame* game) {
 }
 
 void touch_enemy(PacmanGame* game) {
-    // Spieler berührt einen Gegner
+    if(game->lives == 0){
+        gameOver(game);
+    }else{game->lives = game->lives- 1;}
+    
 }
 
 void collect_dot(PacmanGame* game) {
@@ -96,6 +104,13 @@ void power_up_collected(PacmanGame* game) {
     // Power-Up einsammeln
 }
 
+void gameOver(PacmanGame* game){
+    game->is_game_over = true;
+    if(game.lives == 0){printf(GAME_OVER);}
+    elseif(game.foods == 0){printf(YOU_WON)};
+    
+    
+}
 
 
 int main() {
