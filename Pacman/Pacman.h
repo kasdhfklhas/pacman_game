@@ -4,6 +4,9 @@
 #include <stdbool.h>
 #define GRID_ROWS 32
 #define GRID_COLS 29
+#define PACMAN_SYMBOL "P"
+#define LIVES 3
+#define YELLOW  "\033[33m"
 
 typedef struct {
     int grid_size[2];

@@ -8,6 +8,7 @@
 #define TELEPORT_COORDINATES_2  {15,28}
 #define FOOD_COORDINATES //TODO
 #define POWERUP_COORDINATES //TODO
+#define FOOD_AMOUNT //TODO
 
 const char* map[GRID_ROWS][GRID_COLS+1] ={
 "#############################",

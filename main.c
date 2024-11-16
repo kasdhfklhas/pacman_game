@@ -10,22 +10,11 @@
 
 //#define GRID_ROWS 32
 //#define GRID_COLS 29
-#define LIVES 3
-#define BEHAVIOR_FLEE 0
-#define BEHAVIOR_CATCH 1
-#define GHOST_SYMBOLE "G"
-#define PACMAN_SYMBOLE "P"
-
-
-#define GREEN   "\033[32m"
-#define RED     "\033[31m"
-#define BLUE    "\033[34m"
-#define YELLOW  "\033[33m"
 
 
 //Global Variable
 Pacman pacman;
-Ghost ghost[NUM_GHOSTS];
+Ghost ghost;
 
 
 
