@@ -30,15 +30,15 @@ Ghost ghost[NUM_GHOSTS];
 
 
 void initialize_pacman(){ //struct initalisieren
-    pacman->grid_size[0] = GRID_ROWS;
-    pacman->grid_size[1] = GRID_COLS;
-    pacman->pacman_position[0] = 0 + 1; //Zeile unterhalb der Wand;
-    pacman->pacman_position[1] = GRID_COLS - 1 - 1; //Spalte neben der Wand
-    pacman->score = 0;
-    pacman->lives = LIVES;
-    pacman->is_game_over = false;
-    pacman->pacman_color = YELLOW;
-    pacman->symbole = PACMAN_SYMBOLE;
+    pacman.grid_size[0] = GRID_ROWS;
+    pacman.grid_size[1] = GRID_COLS;
+    pacman.pacman_position[0] = 0 + 1; //Zeile unterhalb der Wand;
+    pacman.pacman_position[1] = GRID_COLS - 1 - 1; //Spalte neben der Wand
+    pacman.score = 0;
+    pacman.lives = LIVES;
+    pacman.is_game_over = false;
+    pacman.pacman_color = YELLOW;
+    pacman.symbole = PACMAN_SYMBOLE;
   
 
 }
@@ -98,10 +98,7 @@ void exitGame() {
 void start_game() {
     initialize_pacman();
     initialize_ghost();
-    initialize_foods();
-
     
-
     //TODO: GAMEschleife hier einfügen
 }
 
@@ -144,6 +141,6 @@ void power_up_collected() {
 
 
 int main() {
-    start_game(&pacman);
+    start_game();
     return 0;
 }
