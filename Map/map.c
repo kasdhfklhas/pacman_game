@@ -1,8 +1,13 @@
-#ifndef MAP_H
+
 #define MAP_H
 
 #define GRID_ROWS 32
 #define GRID_COLS 29
+
+#define TELEPORT_COORDINATES_1 {15,0}
+#define TELEPORT_COORDINATES_2  {15,28}
+#define FOOD_COORDINATES //TODO
+#define POWERUP_COORDINATES //TODO
 
 const char* map[GRID_ROWS][GRID_COLS+1] ={
 "#############################",
@@ -38,4 +43,3 @@ const char* map[GRID_ROWS][GRID_COLS+1] ={
 "#############################",
 };
 
-#endif

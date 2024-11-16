@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Messages/messages.h"
-#include "Map/map.h"
+#include "Map/map.c"
 #include "stdbool.h"
 #include "Pacman/Pacman.h"
 #include "Ghosts/Ghosts.h"
 #include "Ghosts/Spawnpositions.h"
 
-#define GRID_ROWS 32
-#define GRID_COLS 29
+//#define GRID_ROWS 32
+//#define GRID_COLS 29
 #define LIVES 3
 #define BEHAVIOR_FLEE 0
 #define BEHAVIOR_CATCH 1
@@ -23,7 +23,7 @@
 #define YELLOW  "\033[33m"
 
 
-
+//Global Variable
 Pacman pacman;
 Ghost ghost[NUM_GHOSTS];
 
@@ -107,7 +107,24 @@ void move_pacman(char direction) {
 }
 
 void teleport_pacman() {
-    // Pacman an eine andere Position teleportieren
+    //aktuelle Position abrufen
+    int current_row = pacman.pacman_position[0];
+    int current_col = pacman.pacman_position[1];
+
+    // Fixe Teleportationspunkte auf der Karte abrufen
+    int teleport_point_1[2] = TELEPORT_COORDINATES_1;
+    int teleport_point_2[2] = TELEPORT_COORDINATES_2;
+
+    // Prüfen ob Pacman auf dem teleportationspunkt ist.
+    if (current_row == teleport_point_1[0] && current_col == teleport_point_1[1]) {
+        // Teleportieren im Fall1
+        pacman.pacman_position[0] = teleport_point_2[0];
+        pacman.pacman_position[1] = teleport_point_2[1];
+    } else if (current_row == teleport_point_2[0] && current_col == teleport_point_2[1]) {
+        // Teleportieren im Fall2
+        pacman.pacman_position[0] = teleport_point_1[0];
+        pacman.pacman_position[1] = teleport_point_1[1];
+    }
 }
 
 void ghost_movement() {
