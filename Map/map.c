@@ -10,6 +10,20 @@
 #define POWERUP_COORDINATES //TODO
 #define FOOD_AMOUNT //TODO
 
+//GhostSpawn
+#define GHOST_1_ROW 14
+#define GHOST_1_COL 11
+
+#define GHOST_2_ROW 14
+#define GHOST_2_COL 12
+
+#define GHOST_3_ROW 15
+#define GHOST_3_COL 11
+
+//PACMAN Spawn
+#define PACMAN_SPAWNPOINT_ROW 2
+#define PACMAN_SPAWNPOINT_COL 26
+
 const char* map[GRID_ROWS][GRID_COLS+1] ={
 "#############################",
 "#############################",

@@ -6,7 +6,7 @@
 #include "stdbool.h"
 #include "Pacman/Pacman.h"
 #include "Ghosts/Ghosts.h"
-#include "Ghosts/Spawnpositions.h"
+
 
 //#define GRID_ROWS 32
 //#define GRID_COLS 29
@@ -19,17 +19,13 @@ Ghost ghost;
 
 
 void initialize_pacman(){ //struct initalisieren
-    pacman.grid_size[0] = GRID_ROWS;
-    pacman.grid_size[1] = GRID_COLS;
-    pacman.pacman_position[0] = 0 + 1; //Zeile unterhalb der Wand;
-    pacman.pacman_position[1] = GRID_COLS - 1 - 1; //Spalte neben der Wand
+    pacman.pacman_position[0] = PACMAN_SPAWNPOINT_ROW;
+    pacman.pacman_position[1] = PACMAN_SPAWNPOINT_COL;
     pacman.score = 0;
     pacman.lives = LIVES;
-    pacman.is_game_over = false;
     pacman.pacman_color = YELLOW;
-    pacman.symbole = PACMAN_SYMBOLE;
+    pacman.symbole = PACMAN_SYMBOL;
   
-
 }
 void initialize_ghost(){ //struct initalisieren
     int ghost_position[NUM_GHOSTS][2]{
@@ -52,7 +48,7 @@ void initialize_ghost(){ //struct initalisieren
             ghost[i].ghost_color = BLUE;  
         }
 
-        ghost[i].symbole = GHOST_SYMBOLE;
+        ghost[i].symbole = GHOST_SYMBOL;
         
         }
 
@@ -63,7 +59,7 @@ void print_map() {
     // Karte drucken
 }
 void gameEnd(){
-    pacman.is_game_over = true;
+ 
     if(pacman.lives == 0){printf("%s",GAME_OVER);}
     else if(pacman.foods == 0){printf("%s",YOU_WON);}
     
