@@ -17,7 +17,6 @@
 #define PACMAN_SYMBOLE "P"
 
 
-//ANSI ESCAPE Codes for Colors
 #define GREEN   "\033[32m"
 #define RED     "\033[31m"
 #define BLUE    "\033[34m"
@@ -26,11 +25,11 @@
 
 
 Pacman pacman;
-Ghost ghosts[NUM_GHOSTS];
+Ghost ghost[NUM_GHOSTS];
 
 
 
-void initialize_pacman(Pacman* pacman){ //struct initalisieren
+void initialize_pacman(){ //struct initalisieren
     pacman->grid_size[0] = GRID_ROWS;
     pacman->grid_size[1] = GRID_COLS;
     pacman->pacman_position[0] = 0 + 1; //Zeile unterhalb der Wand;
@@ -43,7 +42,7 @@ void initialize_pacman(Pacman* pacman){ //struct initalisieren
   
 
 }
-void initialize_ghost(Ghost* ghost){ //struct initalisieren
+void initialize_ghost(){ //struct initalisieren
     int ghost_position[NUM_GHOSTS][2]{
         {GHOST_1_ROW,GHOST_1_COL},
         {GHOST_2_ROW, GHOST_2_COL},
@@ -71,15 +70,6 @@ void initialize_ghost(Ghost* ghost){ //struct initalisieren
     }
 
 
-
-void load_level() {
-    // Level laden und initialisieren
-}
-
-void generate_map() {
-    // Karte generieren
-}
-
 void print_map() {
     // Karte drucken
 }
@@ -106,14 +96,16 @@ void exitGame() {
 }
 
 void start_game() {
-    initialize_pacman(&pacman);
-    initialize_ghost(&ghost);
-    initialize_foods(&food);
+    initialize_pacman();
+    initialize_ghost();
+    initialize_foods();
+
+    
 
     //TODO: GAMEschleife hier einfügen
 }
 
-void move_pacman( char direction) {
+void move_pacman(char direction) {
     // Pacman bewegen
 }
 
@@ -141,9 +133,6 @@ void display_status() {
     // Spielstatus anzeigen
 }
 
-void check_win_condition() {
-    // Gewinnbedingung überprüfen
-}
 
 void pause_game() {
     // Spiel pausieren
