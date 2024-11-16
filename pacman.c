@@ -1,82 +1,105 @@
-import random
+#include <studio.h>
+#include <stdlib.h>
+#include <time.h>
 
-class PacmanGame:
-    def __init__(self):
-   
-    def select_map(self):
-        # Auswahl der Karte
-      
+#define GRID_ROWS 20
+#define GRID_COLS 20
+#define LIVES 3
 
-    def load_level(self):
-        # Level laden und initialisieren
- 
+typedef struct {
+    int grid_size[2];
+    int pacman_position[2];
+    int score;
+    bool is_game_over;
+    int lives;
+    int grid[GRID_ROWS][GRID_COLS];
+} Pacman_Game;
 
-    def generate_map(self):
-        
+void initialize_pacman(Pacman_Game* game){ //struct initalisieren
+    game->grid_size[0] = GRID_ROWS;
+    game->grid_size[1] = GRID_COLS;
+    game->pacman_position[0] = 0 + 1; //Zeile unterhalb der Wand;
+    game->pacman_position[1] = GRID_COLS - 1 - 1; //Spalte neben der Wand
+    game->score = 0;
+    game->lives = LIVES;
+    game->is_game_over = false;
 
-    def print_map(self):
+
+}
 
 
-    def touch_enemy(self):
-        # Spieler berhrt einen Gegner
-        pass
+void load_level(PacmanGame* game) {
+    // Level laden und initialisieren
+}
 
-    def collect_dot(self):
-        # Spieler sammelt einen Dot ein
-        pass
+void generate_map(PacmanGame* game) {
+    // Karte generieren
+}
 
-    def end_game(self):
-        # Das Spiel endet, entweder durch Verlust aller Leben oder das Sammeln aller Dots
-        pass
+void print_map(PacmanGame* game) {
+    // Karte drucken
+}
 
-    def start_game(self):
-     
-    def move_pacman(self, direction):
-        # Pacman in die angegebene Richtung bewegen
-        pass
+void touch_enemy(PacmanGame* game) {
+    // Spieler berührt einen Gegner
+}
 
-    def teleport_pacman(self):
-        # Pacman an eine andere Position teleportieren
-        pass
+void collect_dot(PacmanGame* game) {
+    // Spieler sammelt einen Dot ein
+}
 
-    def ghost_movement(self):
-        # Bewegung der Geister implementieren
-        pass
+void end_game(PacmanGame* game) {
+    // Das Spiel endet
+}
 
-    def check_collision(self):
-        # Kollision mit Wnden oder Gegnern berprfen
-        pass
+void start_game(PacmanGame* game) {
+    // Spiel starten
+}
 
-    def update_map(self):
-        # Karte nach jeder Bewegung aktualisieren
-        pass
+void move_pacman(PacmanGame* game, char direction) {
+    // Pacman bewegen
+}
 
-    def update_score(self):
-        # Punktestand aktualisieren
-        pass
+void teleport_pacman(PacmanGame* game) {
+    // Pacman an eine andere Position teleportieren
+}
 
-    def display_status(self):
-        # Spielstatus anzeigen (z.B. verbleibende Leben, Punktestand)
-        pass
+void ghost_movement(PacmanGame* game) {
+    // Bewegung der Geister
+}
 
-    def check_win_condition(self):
-        # berprfen, ob der Spieler gewonnen hat (z.B. alle Dots gesammelt)
-        pass
+void check_collision(PacmanGame* game) {
+    // Kollision überprüfen
+}
 
-    def pause_game(self):
-        # Das Spiel pausieren
-        pass
+void update_map(PacmanGame* game) {
+    // Karte aktualisieren
+}
 
-    def power_up_collected(self):
-        # Power-Up einsammeln und Effekt aktivieren
-        pass
+void update_score(PacmanGame* game) {
+    // Punktestand aktualisieren
+}
 
-    def respawn_pacman(self):
-        # Pacman nach Verlust eines Lebens wieder an der Startposition erscheinen lassen
-        pass
+void display_status(PacmanGame* game) {
+    // Spielstatus anzeigen
+}
 
-# Spiel starten
-if __name__ == "__main__":
-    game = PacmanGame()
-    game.start_game()
+void check_win_condition(PacmanGame* game) {
+    // Gewinnbedingung überprüfen
+}
 
+void pause_game(PacmanGame* game) {
+    // Spiel pausieren
+}
+
+void power_up_collected(PacmanGame* game) {
+    // Power-Up einsammeln
+}
+
+
+
+int main() {
+    PacmanGame game;
+    start_game(&game);
+    return 0;
+}
