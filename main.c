@@ -1,26 +1,52 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 #include "Messages/messages.h"
 #include "Map/map.c"
 #include "stdbool.h"
 #include "Pacman/Pacman.h"
 #include "Ghosts/Ghosts.h"
+#include <termios.h> // für Input eingabe
+#include "Pacman/pacman_control.c"
+#include "Ghosts/ghost_control.c"
+
 
 
 //#define GRID_ROWS 32
 //#define GRID_COLS 29
 
 
+
 //Global Variable
 Pacman pacman;
-Ghost ghost;
+Ghost ghost[NUM_GHOSTS];
+bool game_running;
 
+
+
+void set_raw_mode(bool enable) { //used for keyinput without the use of pressing Enter
+    static struct termios oldt, newt;
+    if (enable) {
+        // Get current terminal attributes
+        tcgetattr(STDIN_FILENO, &oldt);
+        newt = oldt;
+
+        // Disable canonical mode and echo
+        newt.c_lflag &= ~(ICANON | ECHO);
+
+        // Apply the changes
+        tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    } else {
+        // Restore old terminal settings
+        tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    }
+}
 
 
 void initialize_pacman(){ //struct initalisieren
-    pacman.pacman_position[0] = PACMAN_SPAWNPOINT_ROW;
-    pacman.pacman_position[1] = PACMAN_SPAWNPOINT_COL;
+    pacman.pacman_position_coordinates[0] = PACMAN_SPAWNPOINT_ROW;
+    pacman.pacman_position_coordinates[1] = PACMAN_SPAWNPOINT_COL;
     pacman.score = 0;
     pacman.lives = LIVES;
     pacman.pacman_color = YELLOW;
@@ -28,17 +54,16 @@ void initialize_pacman(){ //struct initalisieren
   
 }
 void initialize_ghost(){ //struct initalisieren
-    int ghost_position[NUM_GHOSTS][2]{
+    int position_coordinates[NUM_GHOSTS][2]{
         {GHOST_1_ROW,GHOST_1_COL},
         {GHOST_2_ROW, GHOST_2_COL},
         {GHOST_3_ROW,GHOST_3_COL}
         };
 
     for(int i = 0; i < NUM_GHOSTS; i++){
-        ghost[i].positions[0] = ghost_position[i][0];
-        ghost[i].positions[1] = ghost_position[i][1];
+        ghost[i].ghost_position_coordinates[0] = position_coordinates[i][0];
+        ghost[i].ghost_position_coordinates[1] = position_coordinates[i][1];
         
-        ghost[i].behavior = BEHAVIOR_CATCH;
 
         if(i == 0){
             ghost[i].ghost_color = RED;
@@ -55,13 +80,20 @@ void initialize_ghost(){ //struct initalisieren
     }
 
 
-void print_map() {
-    // Karte drucken
+void draw_game() {
+    
 }
+
 void gameEnd(){
  
-    if(pacman.lives == 0){printf("%s",GAME_OVER);}
-    else if(pacman.foods == 0){printf("%s",YOU_WON);}
+    if(pacman.lives == 0){
+        game_running = false;
+        printf("%s",GAME_OVER);
+        }
+    else if(pacman.foods == 0){
+        game_running = false;
+        printf("%s",YOU_WON);
+        }
     
     
 }
@@ -77,24 +109,32 @@ void collect_food() {
 }
 
 void exitGame() {
-    // Das Spiel endet
+    game_running = false;
+    
 }
 
 void start_game() {
     initialize_pacman();
     initialize_ghost();
-    
-    //TODO: GAMEschleife hier einfügen
+
+    game_running = true;
+    set_raw_mode(true);
+
+    while(game_running){
+
+        printf(CONTROL_MESSAGE);
+        //TODO: GAMEschleife hier einfügen
+    }
+    set_raw_mode(false);
+       
 }
 
-void move_pacman(char direction) {
-    // Pacman bewegen
-}
+
 
 void teleport_pacman() {
     //aktuelle Position abrufen
-    int current_row = pacman.pacman_position[0];
-    int current_col = pacman.pacman_position[1];
+    int current_row = pacman.pacman_position_coordinates[0];
+    int current_col = pacman.pacman_position_coordinates[1];
 
     // Fixe Teleportationspunkte auf der Karte abrufen
     int teleport_point_1[2] = TELEPORT_COORDINATES_1;
@@ -103,21 +143,28 @@ void teleport_pacman() {
     // Prüfen ob Pacman auf dem teleportationspunkt ist.
     if (current_row == teleport_point_1[0] && current_col == teleport_point_1[1]) {
         // Teleportieren im Fall1
-        pacman.pacman_position[0] = teleport_point_2[0];
-        pacman.pacman_position[1] = teleport_point_2[1];
+        pacman.pacman_position_coordinates[0] = teleport_point_2[0];
+        pacman.pacman_position_coordinates[1] = teleport_point_2[1];
     } else if (current_row == teleport_point_2[0] && current_col == teleport_point_2[1]) {
         // Teleportieren im Fall2
-        pacman.pacman_position[0] = teleport_point_1[0];
-        pacman.pacman_position[1] = teleport_point_1[1];
+        pacman.pacman_position_coordinates[0] = teleport_point_1[0];
+        pacman.pacman_position_coordinates[1] = teleport_point_1[1];
     }
 }
 
-void ghost_movement() {
-    // Bewegung der Geister
-}
 
-void check_collision() {
-    // Kollision überprüfen
+
+bool check_collision() {
+    int row = pacman.pacman_position_coordinates[0];
+    int col = pacman.pacman_position_coordinates[1];
+
+     for (int i = 0; i < NUM_GHOSTS; i++){
+        if(row == ghost[i].ghost_position_coordinates[0] && col == ghost[i].ghost_position_coordinates[1]){
+            return true;
+        }
+    return false;
+    
+    }
 }
 
 void update_map() {
@@ -125,20 +172,45 @@ void update_map() {
 }
 
 void update_score() {
-    // Punktestand aktualisieren
+    pacman.score += 1;
 }
 
 void display_status() {
-    // Spielstatus anzeigen
+    printf(pacman.score);
 }
 
 
-void pause_game() {
-    // Spiel pausieren
+void inputRead(char input) {
+     switch (input) {
+        case 'w':
+        //todo
+            break;
+        case 'a':
+//todo
+            break;
+        case 's':  
+//todo
+            break;
+        case 'd':  
+//todo
+            break;
+        case 'p': 
+//todo
+            break;
+        case 'q':                    
+            exitGame();
+            break;
+                                  
+    }
 }
+
 
 void power_up_collected() {
-    // Power-Up einsammeln
+    
+}
+
+void power_up_timer(){
+   
 }
 
 
