@@ -81,8 +81,15 @@ void initialize_ghost(){ //struct initalisieren
 
 
 void draw_game() {
-    
+    printf("%i\n",pacman.score);
+
+    for (int row = 0; row < GRID_ROWS; ++row) {
+        for (int col = 0; col < GRID_COLS; ++col) {
+            printf("Row %d, Col %d: %c\n", row, col, map[row][0][col]);
+        }
+    }
 }
+    
 
 void gameEnd(){
  
