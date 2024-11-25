@@ -12,7 +12,7 @@
 #include "Ghosts/ghost_control.c"
 
 
-
+//test
 //#define GRID_ROWS 32
 //#define GRID_COLS 29
 
