@@ -1,7 +1,6 @@
 #include "Pacman.h"
-#include "../Map/map.c" 
-#include "stdbool.h"
-#include "../main.c"
+#include <Vars.h>
+
 
 void move_pacman(char drection) {
     int next_row = pacman.pacman_position_coordinates[0];
@@ -9,7 +8,7 @@ void move_pacman(char drection) {
 
     char direction = drection;
 
-    if(map[next_row][0][next_col] != '#' && check_collision()){
+    if(getTile(next_row, next_col) != '#' && check_collision()){
         switch(direction){
             case 'w':
                 next_row --;

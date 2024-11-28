@@ -1,23 +1,45 @@
+#include <Vars.h>
 
-#define MAP_H
+// todo: read map from file? 
 
-#define GRID_ROWS 32
-#define GRID_COLS 29
+void initMap() {
+    grid.tiles = malloc(GRID_ROWS * sizeof(char *));
 
-#define TELEPORT_COORDINATES_1 {15,0}
-#define TELEPORT_COORDINATES_2  {15,28}
-#define FOOD_COORDINATES { \
-    {2, 3}, {2, 5}, {2, 7}, {2, 9}, {2, 11}, {2, 13}, {2, 19}, {2, 21}, {2, 23}, {2, 25}, {2, 27}, \
-    {4, 2}, {4, 6}, {4, 10}, {4, 14}, {4, 18}, {4, 22}, {4, 26}, {4, 30}, \
-    {5, 3}, {5, 8}, {5, 18}, {5, 28}, \
-    {7, 2}, {7, 6}, {7, 11}, {7, 14}, {7, 18}, {7, 23}, {7, 30} \
+    for (int i = 0; i < GRID_ROWS; i++) {
+        for (int j = 0; j < GRID_COLS; j++) {
+            grid.tiles[i][j] = rawMap[i][j];
+        }
+    }
+}
 
-#define FOOD_AMOUNT 31
-#define POWERUP_COORDINATES //TODO
+char getTile(int x, int y) {
+    if (x > GRID_ROWS &&  y > GRID_COLS)
+    {
+        return;
+    }
+    
+    return grid.tiles[y][x];
+} 
+
+void setTile(int x, int y) {
+    if (x > GRID_ROWS &&  y > GRID_COLS)
+    {
+        return;
+    }
+
+    return grid.tiles[y][x];
+}
+
+void destroyMap() {
+    for (int i = 0; i < GRID_ROWS; i++)
+    {
+        free(grid.tiles[i]);
+    }
+    free(grid.tiles);
+}
 
 
-
-const char* map[GRID_ROWS][GRID_COLS+1] ={
+const char* rawMap[GRID_ROWS][GRID_COLS+1] ={
 "#############################",
 "#############################",
 "##           ###           ##",

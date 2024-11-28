@@ -1,10 +1,11 @@
-
+#include "stdbool.h"
 #include "Ghosts.h"
-#include "../Map/map.c" // Ensure access to the map
+#include <Vars.h>
+
 
 // Check if the position is valid for ghost movement
 bool is_valid_move(int row, int col) {
-    return map[row][col] != '#' && map[row][col] != 'G';
+    return getTile(row, col) != '#' && getTile(row, col) != 'G';
 }
 
 void ghost_movement() {

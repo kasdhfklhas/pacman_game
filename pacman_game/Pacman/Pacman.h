@@ -1,3 +1,5 @@
+#include "stdbool.h"
+
 #ifndef PACMAN_H
 #define PACMAN_H
 

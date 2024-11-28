@@ -3,23 +3,29 @@
 #include <time.h>
 #include <unistd.h>
 #include "Messages/messages.h"
-#include "Map/map.c"
 #include "stdbool.h"
+#include "Vars.h"
+#include "Map/Map.h"
 #include "Pacman/Pacman.h"
 #include "Ghosts/Ghosts.h"
+
 #include <termios.h> // für Input eingabe
+
+#include "Map/map.c"
 #include "Pacman/pacman_control.c"
 #include "Ghosts/ghost_control.c"
 
+/*
 
-//test
-//#define GRID_ROWS 32
-//#define GRID_COLS 29
+Sleep( 100/ 30 ); 
+-> Sött öppe tue füre gameloop als game speed, hani usm grosse wiite internet
 
+*/
 
 
 //Global Variable
 Pacman pacman;
+Map grid;
 Ghost ghost[NUM_GHOSTS];
 bool game_running;
 
