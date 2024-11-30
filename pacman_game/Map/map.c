@@ -1,6 +1,8 @@
 #include <Vars.h>
 
-// todo: read map from file? 
+// todo: read map from file?
+// Global map variable
+Map grid;
 
 void initMap() {
     grid.tiles = malloc(GRID_ROWS * sizeof(char *));
@@ -17,9 +19,9 @@ char getTile(int x, int y) {
     {
         return;
     }
-    
+
     return grid.tiles[y][x];
-} 
+}
 
 void setTile(int x, int y) {
     if (x > GRID_ROWS &&  y > GRID_COLS)
