@@ -1,5 +1,5 @@
 #include "Pacman.h"
-#include <Vars.h>
+#include "../Vars.h"
 
 
 void move_pacman(char drection) {

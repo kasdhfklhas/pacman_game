@@ -1,6 +1,6 @@
 #include "Ghosts.h" // Include necessary headers
 #include <stdbool.h>
-#include "../Map/Map.h"
+#include "../Vars.h"
 
 
 // Check if the position is valid

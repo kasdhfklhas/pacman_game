@@ -19,9 +19,13 @@ typedef struct {
   char **tiles;
 } Map;
 
-// Declare the global map variable
-extern Map grid;
 
+
+char* rawMap[GRID_ROWS][GRID_COLS+1];
+
+
+
+void initMap();
 char getTile(int x, int y);
 
 

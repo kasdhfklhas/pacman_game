@@ -4,8 +4,9 @@
 #include <unistd.h>
 #include "Messages/messages.h"
 #include "stdbool.h"
-#include "Vars.h"
 #include "Map/Map.h"
+#include "Printer/Printer.h"
+
 #include "Pacman/Pacman.h"
 #include "Ghosts/Ghosts.h"
 
@@ -14,6 +15,7 @@
 #include "Map/map.c"
 #include "Pacman/pacman_control.c"
 #include "Ghosts/ghost_control.c"
+#include "Vars.h"
 
 /*
 
@@ -83,21 +85,7 @@ void initialize_ghost(){ //struct initalisieren
 
         ghost[i].symbole = GHOST_SYMBOL;
     }
-}
-
-
-void draw_game() {
-    printf("%i\n",pacman.score);
-
-    for (int row = 0; row < GRID_ROWS; ++row) {
-        for (int col = 0; col < GRID_COLS; ++col) {
-            printf("Row %d, Col %d: %c\n", row, col, map[row][0][col]);
-        }
-    }
-
-    //TODO: draw foods, pacman,boosters
-}
-    
+}    
 
 void gameEnd(){
  
@@ -131,18 +119,20 @@ void exitGame() {
 void start_game() {
     initialize_pacman();
     initialize_ghost();
+    initMap();
 
     game_running = true;
     set_raw_mode(true);
 
     while(game_running){
-        draw_game();
         printf(CONTROL_MESSAGE);
 
         char input = getchar();
         move_pacman(input);
 
+        char frame = prepareFrame();
         usleep(100000); //langsamerer Loop
+        renderFrame(frame);
     }
     set_raw_mode(false);
        

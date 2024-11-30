@@ -1,7 +1,6 @@
-#include "Map.h"
-#include "Ghosts.h"
-#include "Pacman.h"
-
+#include "Map/Map.h"
+#include "Pacman/Pacman.h"
+#include "Ghosts/Ghosts.h"
 
 extern Map grid;
 extern Pacman pacman;
