@@ -19,6 +19,7 @@ typedef struct {
     bool powerUp;
     const char* pacman_color;
     const char* symbole;
+    char direction;
 } Pacman;
 
 #endif 

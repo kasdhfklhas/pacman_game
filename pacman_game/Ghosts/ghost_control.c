@@ -1,14 +1,16 @@
 #include "Ghosts.h" // Include necessary headers
 #include <stdbool.h>
 #include "../Map/Map.h"
+#include "../Pacman/Pacman.h"
 
+Pacman pacman;
+Map map;
+Ghost ghost[NUM_GHOSTS];
 
 // Check if the position is valid
 bool is_valid_move(int row, int col) {
     return grid.tiles[row][col] != '#' && grid.tiles[row][col] != 'G';
 }
-
-
 
 
 

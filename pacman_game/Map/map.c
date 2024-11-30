@@ -1,4 +1,4 @@
-#include <Vars.h>
+#include <../Vars.h>
 
 // todo: read map from file?
 // Global map variable
