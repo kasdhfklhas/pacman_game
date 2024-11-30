@@ -87,6 +87,33 @@ void initialize_ghost(){ //struct initalisieren
     }
 }    
 
+
+void draw_game() {
+    printf("Score: %d\t Lives: %d\n", pacman.score, pacman.lives);
+    
+    for (int row = 0; row < GRID_ROWS; ++row) {
+        for (int col = 0; col < GRID_COLS; ++col) {
+            bool entity_drawn = false;
+            if (pacman.pacman_position_coordinates[0] == row && pacman.pacman_position_coordinates[1] == col) {
+                printf("%s%s\033[0m", pacman.pacman_color, pacman.symbole);
+                entity_drawn = true;
+            }
+            for (int i = 0; i < NUM_GHOSTS; ++i) {
+                if (ghost[i].ghost_position_coordinates[0] == row && ghost[i].ghost_position_coordinates[1] == col) {
+                    printf("%s%s\033[0m", ghost[i].ghost_color, ghost[i].symbole);
+                    entity_drawn = true;
+                }
+            }
+            if (!entity_drawn) {
+                printf("%c", grid.tiles[row][col]);
+            }
+        }
+        printf("\n");
+    }
+}
+
+    
+
 void gameEnd(){
  
     if(pacman.lives == 0){
@@ -100,16 +127,42 @@ void gameEnd(){
     
     
 }
-void touch_enemy() {
-    if(pacman.lives == 0){
-        gameEnd();
-    }else{pacman.lives = pacman.lives- 1;}
-    
-}
 
 void collect_food() {
-    
+    int row = pacman.pacman_position_coordinates[0];
+    int col = pacman.pacman_position_coordinates[1];
+    if (grid.tiles[row][col] == '*') {
+        pacman.score += 10;
+        pacman.foods -= 1;
+        grid.tiles[row][col] = ' ';
+    }
 }
+
+
+bool check_collision() {
+    int row = pacman.pacman_position_coordinates[0];
+    int col = pacman.pacman_position_coordinates[1];
+
+     for (int i = 0; i < NUM_GHOSTS; i++){
+        if(row == ghost[i].ghost_position_coordinates[0] && col == ghost[i].ghost_position_coordinates[1]){
+            return true;
+        }
+    }
+    return false;
+}
+
+void touch_enemy() {
+  if (check_collision()) {
+        pacman.lives -= 1;
+        if (pacman.lives <= 0) {
+            gameEnd();
+        }
+        // Reset pacman to spawn point after touching a ghost
+        pacman.pacman_position_coordinates[0] = PACMAN_SPAWNPOINT_ROW;
+        pacman.pacman_position_coordinates[1] = PACMAN_SPAWNPOINT_COL;
+    }
+}
+
 
 void exitGame() {
     game_running = false;
@@ -161,19 +214,49 @@ void teleport_pacman() {
     }
 }
 
-
-
-bool check_collision() {
-    int row = pacman.pacman_position_coordinates[0];
-    int col = pacman.pacman_position_coordinates[1];
-
-     for (int i = 0; i < NUM_GHOSTS; i++){
-        if(row == ghost[i].ghost_position_coordinates[0] && col == ghost[i].ghost_position_coordinates[1]){
-            return true;
-        }
+void inputRead(char input) {
+    switch (input) {
+        case 'w':
+        case 'a':
+        case 's': 
+        case 'd':
+            move_pacman(input);
+            teleport_pacman();
+            break;
+        case 'q': 
+            exitGame();
+            break;
+        default:
+            break;
     }
-    return false;
 }
+
+void start_game() {
+    initialize_pacman();
+    initialize_ghost();
+
+    game_running = true;
+    set_raw_mode(true);
+
+    while(game_running){
+        draw_game();
+        printf(CONTROL_MESSAGE);
+
+        char input = getchar();
+        inputRead(input);
+        ghost_movement();
+        collect_food();
+        touch_enemy();
+        
+        usleep(100000); //langsamerer Loop
+        system("clear");
+
+    }
+    set_raw_mode(false);
+    destroyMap();
+       
+}
+
 
 void update_map() {
     // Karte aktualisieren
@@ -188,41 +271,8 @@ void display_status() {
 }
 
 
-void inputRead(char input) {
-     switch (input) {
-        case 'w':
-            move_pacman(input);
-            break;
-        case 'a':
-            move_pacman(input);
-            break;
-        case 's':  
-            move_pacman(input);
-            break;
-        case 'd':  
-            move_pacman(input);
-            break;
-        case 'p': 
-//todo Pause game
-            break;
-        case 'q':                    
-            exitGame();
-            break;
-                                  
-    }
-}
-
-
-void power_up_collected() {
-    
-}
-
-void power_up_timer(){
-   
-}
-
-
 int main() {
+    srand(time(NULL)); // For random ghost movement
     start_game();
     return 0;
 }
