@@ -1,67 +1,39 @@
-#include "Ghosts.h" // Include necessary headers
-#include <stdbool.h>
+#include "Ghosts.h"
 #include "../Vars.h"
+#include "../Pacman/Pacman.h"
+#include "stdlib.h"
+#include "../Map/Map.h"
 
-Pacman pacman;
-Map map;
 Ghost ghost[NUM_GHOSTS];
-
-// Check if the position is valid
-bool is_valid_move(int row, int col) {
-    return grid.tiles[row][col] != '#' && grid.tiles[row][col] != 'G';
-}
-
-
+Pacman pacman;
 
 void ghost_movement() {
     for (int i = 0; i < NUM_GHOSTS; i++) {
-        int current_row = ghost[i].ghost_position_coordinates[0];
-        int current_col = ghost[i].ghost_position_coordinates[1];
-        int target_row, target_col;
+        int next_row = ghost[i].ghost_position_coordinates[0];
+        int next_col = ghost[i].ghost_position_coordinates[1];
 
         switch (ghost[i].behavior) {
-            case 0: // Red Ghost: Chaser
-                target_row = pacman.pacman_position_coordinates[0];
-                target_col = pacman.pacman_position_coordinates[1];
+            case 0: // Chaser, move towards pacman
+                if (pacman.pacman_position_coordinates[0] > next_row) next_row++;
+                else if (pacman.pacman_position_coordinates[0] < next_row) next_row--;
+                if (pacman.pacman_position_coordinates[1] > next_col) next_col++;
+                else if (pacman.pacman_position_coordinates[1] < next_col) next_col--;
                 break;
-
-            case 1: // Green Ghost: Ambusher
-                // Predict Pac-Man's position based on direction
-                if (pacman.direction == 'w') {
-                    target_row = pacman.pacman_position_coordinates[0] - 2;
-                    target_col = pacman.pacman_position_coordinates[1];
-                } else if (pacman.direction == 's') {
-                    target_row = pacman.pacman_position_coordinates[0] + 2;
-                    target_col = pacman.pacman_position_coordinates[1];
-                } else if (pacman.direction == 'a') {
-                    target_row = pacman.pacman_position_coordinates[0];
-                    target_col = pacman.pacman_position_coordinates[1] - 2;
-                } else if (pacman.direction == 'd') {
-                    target_row = pacman.pacman_position_coordinates[0];
-                    target_col = pacman.pacman_position_coordinates[1] + 2;
-                } else {
-                    target_row = pacman.pacman_position_coordinates[0];
-                    target_col = pacman.pacman_position_coordinates[1];
+            case 2: // Random Walker, move randomly
+                switch (rand() % 4) {
+                    case 0: next_row++; break;
+                    case 1: next_row--; break;
+                    case 2: next_col++; break;
+                    case 3: next_col--; break;
                 }
                 break;
-
-            case 2: // Blue Ghost: Random Walker
-                target_row = current_row;
-                target_col = current_col;
-
-                // Choose a random direction (0 = up, 1 = right, 2 = down, 3 = left)
-                int random_direction = rand() % 4;
-                if (random_direction == 0 && map[current_row - 1][current_col] != '#') target_row = current_row - 1;
-                if (random_direction == 1 && map[current_row][current_col + 1] != '#') target_col = current_col + 1;
-                if (random_direction == 2 && map[current_row + 1][current_col] != '#') target_row = current_row + 1;
-                if (random_direction == 3 && map[current_row][current_col - 1] != '#') target_col = current_col - 1;
+            default:
                 break;
         }
 
-        // Move the ghost if the target position is valid
-        if (map[target_row][target_col] != '#' && map[target_row][target_col] != 'G') {
-            ghost[i].ghost_position_coordinates[0] = target_row;
-            ghost[i].ghost_position_coordinates[1] = target_col;
+        if (getTile(next_row, next_col) != '#') {
+            ghost[i].ghost_position_coordinates[0] = next_row;
+            ghost[i].ghost_position_coordinates[1] = next_col;
         }
     }
 }

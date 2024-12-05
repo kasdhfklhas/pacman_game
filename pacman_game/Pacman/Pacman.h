@@ -5,12 +5,9 @@
 
 #define PACMAN_SYMBOL "P"
 #define LIVES 3
-#define YELLOW  "\033[33m"
-
+#define YELLOW "\033[33m"
 #define PACMAN_STR "\033[33mC\033[0m"
 
-
-//PACMAN Spawn
 #define PACMAN_SPAWNPOINT_ROW 2
 #define PACMAN_SPAWNPOINT_COL 26
 
