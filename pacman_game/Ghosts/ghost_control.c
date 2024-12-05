@@ -7,6 +7,10 @@
 Ghost ghost[NUM_GHOSTS];
 Pacman pacman;
 
+
+
+
+
 void ghost_movement() {
     for (int i = 0; i < NUM_GHOSTS; i++) {
         int next_row = ghost[i].ghost_position_coordinates[0];
@@ -31,9 +35,18 @@ void ghost_movement() {
                 break;
         }
 
-        if (getTile(next_row, next_col) != '#') {
+        char next_tile = getTile(next_row, next_col);
+
+        if (next_tile == '-' && !ghost[i].crossed_gate) {
+            // Ghost crosses the gate for the first time
+            ghost[i].ghost_position_coordinates[0] = next_row;
+            ghost[i].ghost_position_coordinates[1] = next_col;
+            ghost[i].crossed_gate = true;  // Mark as crossed
+        } else if (next_tile != '#' && next_tile != '-') {
+            // Normal movement if not a wall ('#') and not a gate already crossed
             ghost[i].ghost_position_coordinates[0] = next_row;
             ghost[i].ghost_position_coordinates[1] = next_col;
         }
+        // If the next tile is '-', but ghost has already crossed, or if it is a wall, don't update position
     }
 }

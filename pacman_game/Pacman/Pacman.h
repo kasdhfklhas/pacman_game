@@ -15,8 +15,8 @@ typedef struct {
     int pacman_position_coordinates[2];
     int score;
     int lives;
-    int foods;
     bool powerUp;
+    int foods_remaining; 
     const char* pacman_color;
     const char* symbole;
     char direction;

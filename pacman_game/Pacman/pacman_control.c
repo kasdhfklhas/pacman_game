@@ -22,7 +22,7 @@ void move_pacman(char direction) {
             return;
     }
 
-    if (getTile(next_row, next_col) != '#') {
+    if (getTile(next_row, next_col) != '#' && getTile(next_row, next_col) != '-') {
         pacman.pacman_position_coordinates[0] = next_row;
         pacman.pacman_position_coordinates[1] = next_col;
     }

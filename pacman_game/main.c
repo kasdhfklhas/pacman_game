@@ -29,7 +29,7 @@ void exitGame();
 void start_game();
 void teleport_pacman();
 void inputRead(char input);
-void destroyMap();
+//void destroyMap();
 void move_pacman(char direction);
 void ghost_movement();
 
@@ -56,6 +56,7 @@ void initialize_pacman() { // Struct initialization
     pacman.pacman_position_coordinates[1] = PACMAN_SPAWNPOINT_COL;
     pacman.score = 0;
     pacman.lives = LIVES;
+    pacman.foods_remaining = FOOD_AMOUNT;
     pacman.pacman_color = YELLOW;
     pacman.symbole = PACMAN_SYMBOL;
 }
@@ -73,7 +74,7 @@ void initialize_ghost() { // Struct initialization
 
         if (i == 0) {
             ghost[i].ghost_color = RED;
-            ghost[i].behavior = 0; // Chaser
+            ghost[i].behavior = 2; // Chaser
         } else if (i == 1) {
             ghost[i].ghost_color = GREEN;
             ghost[i].behavior = 2; // Random Walker
@@ -81,7 +82,7 @@ void initialize_ghost() { // Struct initialization
             ghost[i].ghost_color = BLUE;
             ghost[i].behavior = 2; // Random Walker
         }
-
+        ghost[i].crossed_gate = false;
         ghost[i].symbole = GHOST_SYMBOL;
     }
 }
@@ -102,8 +103,17 @@ void draw_game() {
                     entity_drawn = true;
                 }
             }
-            if (!entity_drawn) {
+            /*if (!entity_drawn) {
                 printf("%c", grid.tiles[row][col]);
+            }*/
+            if (!entity_drawn) {
+                if (grid.tiles[row][col] == '*') {
+                    //make food orange
+                    printf("\033[33m*\033[0m");
+                } else {
+                    
+                    printf("%c", grid.tiles[row][col]);
+                }
             }
         }
         printf("\n");
@@ -114,7 +124,7 @@ void gameEnd() {
     if (pacman.lives == 0) {
         game_running = false;
         printf("%s", GAME_OVER);
-    } else if (pacman.foods == 0) {
+    } else if (pacman.foods_remaining == 0){
         game_running = false;
         printf("%s", YOU_WON);
     }
@@ -125,7 +135,7 @@ void collect_food() {
     int col = pacman.pacman_position_coordinates[1];
     if (grid.tiles[row][col] == '*') {
         pacman.score += 10;
-        pacman.foods -= 1;
+        pacman.foods_remaining -= 1;
         grid.tiles[row][col] = ' ';
     }
 }
@@ -197,13 +207,13 @@ void inputRead(char input) {
 }
 
 void start_game() {
-    printf("test123");
+    
     initialize_pacman();
-    printf("testx");
+    
     initialize_ghost();
-    printf("test");
+    
     initMap();
-    printf("test");
+
 
     game_running = true;
     set_raw_mode(true);
@@ -220,7 +230,7 @@ void start_game() {
         system("clear");
     }
     set_raw_mode(false);
-    destroyMap();
+    //destroyMap();
 }
 
 int main() {

@@ -12,7 +12,8 @@
     {5, 3}, {5, 8}, {5, 18}, {5, 28}, \
     {7, 2}, {7, 6}, {7, 11}, {7, 14}, {7, 18}, {7, 23}, {7, 30}
 
-#define FOOD_AMOUNT 31
+#define FOOD_AMOUNT 32
+
 
 typedef struct {
     char tiles[GRID_ROWS][GRID_COLS + 1];  // Fixed-size 2D array for the map grid
